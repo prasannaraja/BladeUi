@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { FormControl } from "ngx-typesafe-forms";
 
 @Component({
   selector: "app-welcome",
