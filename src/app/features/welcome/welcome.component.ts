@@ -7,8 +7,7 @@ import { FormControl } from "ngx-typesafe-forms";
   styleUrls: ["./welcome.component.scss"],
 })
 export class WelcomeComponent {
-  public formControl: FormControl<boolean>
-  
+
   public get products() {
     return {
       data: [
