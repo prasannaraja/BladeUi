@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { FormControl } from "ngx-typesafe-forms";
 
 @Component({
   selector: "app-welcome",
@@ -6,6 +7,8 @@ import { Component } from "@angular/core";
   styleUrls: ["./welcome.component.scss"],
 })
 export class WelcomeComponent {
+  public formControl: FormControl<boolean>
+  
   public get products() {
     return {
       data: [
