@@ -1,0 +1,12 @@
+:host {
+    display: flex;
+    height: calc(100vh -52px);
+}
+.outer-flex-container {
+    display: flex;
+    overflow-x: scroll;
+}
+
+.inner-flex-container {
+    display: flex;
+}

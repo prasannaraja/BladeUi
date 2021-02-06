@@ -1,0 +1,27 @@
+<div class="content">
+    <mat-toolbar class="toolbar">
+        <div class="app-title">
+            <a [routerLink]="['/']">
+                <mat-icon>account_balance_wallet</mat-icon>
+            </a>
+            <span>Budget Planner</span>
+        </div>
+        <div class="actions">
+            <button mat-button 
+                routerLinkActive="mat-primary"
+                [routerLink]="'/welcome'"
+                [routerLinkActiveOptions]="{ exact:true }"
+            > Welcome </button>
+            <button mat-button 
+                routerLinkActive="mat-primary"
+                [routerLink]="'/model-set'"
+                [routerLinkActiveOptions]="{ exact:true }"
+            > Models </button>
+            <button mat-button> Current Expenses </button>
+        </div>
+    </mat-toolbar>
+    <div class="content-container">
+        <ng-content>
+        </ng-content>
+    </div>
+</div>
