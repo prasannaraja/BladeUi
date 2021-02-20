@@ -1,1 +1,30 @@
-<p>playground works!</p>
+
+<mat-nav-list td-sidenav-content class="sideNav">
+    <a mat-list-item>
+        <mat-icon mat-list-icon>sort</mat-icon> All Unreads
+    </a>
+    <a mat-list-item>
+        <mat-icon mat-list-icon>chat</mat-icon> All Threads
+    </a>
+    <mat-divider></mat-divider>
+    <h3 mat-subheader>STARRED</h3>
+    <ng-template let-item let-i="index" let-last="last" ngFor [ngForOf]="[0,1]">
+        <a mat-list-item routerLinkActive="active" routerLink="/blader/entry">
+            <mat-icon mat-list-icon>#</mat-icon> starred-channel-{{i}}
+        </a>
+    </ng-template>
+    <mat-divider></mat-divider>
+    <h3 mat-subheader>CHANNELS (5)</h3>
+    <ng-template let-item let-i="index" let-last="last" ngFor [ngForOf]="[0,1,2,3]">
+        <a mat-list-item>
+            <mat-icon mat-list-icon>#</mat-icon> channel-name-{{i}}
+        </a>
+    </ng-template>
+    <mat-divider></mat-divider>
+    <h3 mat-subheader>DIRECT MESSAGES</h3>
+    <ng-template let-item let-i="index" let-last="last" ngFor [ngForOf]="[0,1,2,3,4,5]">
+        <a mat-list-item>
+            <mat-icon color="accent" mat-list-icon>lens</mat-icon> username{{i}}
+        </a>
+    </ng-template>
+</mat-nav-list>
