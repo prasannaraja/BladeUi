@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { IconModule } from './../shared/icon/icon.module';
+import { IconModule } from '../icon/icon.module';
 
 import {
   BladerComponent,
   CanDeactivateBladerComponent
-} from './blader.component';
-import { BladeComponent } from './blade.component';
+} from './blader/blader.component';
+import { BladeComponent } from './blade/blade.component';
 import { BladeManager } from './bladeManager.service';
 
 const BLADER_ROUTES = [

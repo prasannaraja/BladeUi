@@ -18,34 +18,18 @@ import {
   BladeArgs,
   BladeState,
   BladeParamConstants
-} from './models';
-import { BladeManager } from './bladeManager.service';
+} from '../models';
+import { BladeManager } from '../bladeManager.service';
 
 @Component({
   selector: 'tw-blade',
+  templateUrl: './blade.component.html',
+  styleUrls: ['./blade.component.css'],
   host: {
     class: 'blade',
     '[class.blade--selected]': 'isSelected',
     '[class.blade--wide]': 'bladeState === 2'
   },
-  template: `
-  <div class="blade__header" (click)="select()">
-    <div class="blade__commands">
-      <span *ngIf="canMinimize" (click)="changeState(1)">
-        <tw-icon name="window-minimize"></tw-icon>
-      </span>
-      <span *ngIf="canMaximize" (click)="changeState(2)">
-        <tw-icon name="window-restore"></tw-icon>
-      </span>
-      <span *ngIf="canClose" (click)="close()">
-        <tw-icon name="window-close"></tw-icon>
-      </span>
-    </div>
-    <h3>{{ title }}</h3>
-  </div>
-  <div class="blade__content">
-    <ng-template #bladeContent></ng-template>
-  </div>`
 })
 export class BladeComponent implements OnInit, OnDestroy {
   private _componentRef: ComponentRef<any>;
@@ -174,3 +158,4 @@ export class BladeComponent implements OnInit, OnDestroy {
     }
   }
 }
+

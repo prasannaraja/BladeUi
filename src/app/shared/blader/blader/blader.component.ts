@@ -19,26 +19,18 @@ import {
   BladeContext,
   BladeArgs,
   BladeState
-} from './models';
-import { BladeManager } from './bladeManager.service';
-import { BladeComponent } from './blade.component';
+} from '../models';
+import { BladeManager } from '../bladeManager.service';
+import { BladeComponent } from '../blade/blade.component';
 
 @Component({
   selector: 'tw-blader',
+  templateUrl: './blader.component.html',
+  styleUrls: ['./blader.component.css'],
   host: { 'class': 'blader' },
   providers: [
     BladeManager
   ],
-  template: `
-  <ng-content></ng-content>
-  <tw-blade
-    *ngFor="let ctx of bladeContexts"
-    [attr.id]="ctx.id"
-    [context]="ctx"
-    (stateChanged)="stateChanged($event)"
-    (selected)="selectBlade($event)"
-    (closed)="closed($event)">
-  </tw-blade>`
 })
 export class BladerComponent implements OnInit, OnDestroy {
   private _entryComponentId: number;
