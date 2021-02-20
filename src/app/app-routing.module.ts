@@ -1,55 +1,56 @@
 import { getLocaleCurrencySymbol } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { PageNotFoundComponent } from './features/page-not-found/page-not-found.component';
 import { LayoutComponent } from './shared/layout/layout.component';
 
 
 const routes: Routes = [
   {
-    path: 'login',
+    path: "login",
     loadChildren: () =>
-      import('./features/login/login.module').then((m) => m.LoginModule),
+      import("./features/login/login.module").then((m) => m.LoginModule),
   },
   {
-    path: 'logout',
+    path: "logout",
     loadChildren: () =>
-      import('./features/logout/logout.module').then((m) => m.LogoutModule),
+      import("./features/logout/logout.module").then((m) => m.LogoutModule),
   },
   {
-    path: '',
+    path: "",
     children: [
       {
-        path: '', redirectTo: 'welcome', pathMatch: 'full'
+        path: "",
+        redirectTo: "welcome",
+        pathMatch: "full",
       },
       {
-        path: 'welcome',
+        path: "welcome",
         component: LayoutComponent,
         loadChildren: (): Promise<unknown> =>
-          import('./features/welcome/welcome.module').then(
+          import("./features/welcome/welcome.module").then(
             (m) => m.WelcomeModule
           ),
       },
       {
-        path: 'model-set',
+        path: "search",
         component: LayoutComponent,
         loadChildren: (): Promise<unknown> =>
-          import('./features/model-set/model-set.module').then(
-            (m) => m.ModelSetModule
-          ),
+          import("./features/search/search.module").then((m) => m.SearchModule),
       },
       {
-        path: 'reference-data',
+        path: "playground",
         component: LayoutComponent,
         loadChildren: (): Promise<unknown> =>
-          import('./features/reference-data/reference-data.module').then(
-            (m) => m.ReferenceDataModule
+          import("./features/playground/playground.module").then(
+            (m) => m.PlaygroundModule
           ),
       },
     ],
   },
   {
-    path: '**',
-    redirectTo: '',
+    path: "**",
+    component: PageNotFoundComponent,
   },
 ];
 
