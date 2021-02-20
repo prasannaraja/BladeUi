@@ -2,9 +2,9 @@
     <mat-toolbar class="toolbar">
         <div class="app-title">
             <a [routerLink]="['/']">
-                <mat-icon>account_balance_wallet</mat-icon>
+                <mat-icon>donut_small</mat-icon>
             </a>
-            <span>Budget Planner</span>
+            <span style="padding-top: 5px;">Goal Planner</span>
         </div>
         <div class="actions">
             <button mat-button 
@@ -14,10 +14,15 @@
             > Welcome </button>
             <button mat-button 
                 routerLinkActive="mat-primary"
-                [routerLink]="'/model-set'"
+                [routerLink]="'/search'"
                 [routerLinkActiveOptions]="{ exact:true }"
-            > Models </button>
-            <button mat-button> Current Expenses </button>
+            > Search </button>
+            <button mat-button 
+                routerLinkActive="mat-primary" 
+                [routerLink]="'/playground'" 
+                [routerLinkActiveOptions]="{ exact:true }">
+                Playground </button>
+            <button mat-button>Log</button>
         </div>
     </mat-toolbar>
     <div class="content-container">
