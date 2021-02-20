@@ -39,7 +39,8 @@ a mat-icon {
 .content {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  // removed as the height of the taking full space
+  // height: 100%; 
 }
 
 .toolbar {
