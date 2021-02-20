@@ -1,10 +1,16 @@
-import { getLocaleCurrencySymbol } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { PageNotFoundComponent } from './features/page-not-found/page-not-found.component';
-import { LayoutComponent } from './shared/layout/layout.component';
-
-
+import { getLocaleCurrencySymbol } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { Routes, RouterModule, PreloadAllModules } from "@angular/router";
+import { PageNotFoundComponent } from "./features/page-not-found/page-not-found.component";
+import { LayoutComponent } from "./shared/layout/layout.component";
+import {
+  BladerModule,
+  BladeRegistry,
+  BladeMetaData,
+} from "./shared/blader/index";
+import { EntryComponent } from "./blades/entry/entry.component";
+import { ListComponent } from "./blades/list/list.component";
+import { DetailComponent } from "./blades/detail/detail.component";
 const routes: Routes = [
   {
     path: "login",
@@ -49,13 +55,30 @@ const routes: Routes = [
     ],
   },
   {
+    path: "lazy",
+    loadChildren: () =>
+      import("./shared/lazy/lazy.module").then((m) => m.LazyModule),
+  },
+  {
     path: "**",
     component: PageNotFoundComponent,
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [
+    BladerModule,
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: PreloadAllModules,
+      relativeLinkResolution: "legacy",
+    }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+  public constructor(private _bladeRegistry: BladeRegistry) {
+    this._bladeRegistry.register(new BladeMetaData("entry", EntryComponent));
+    this._bladeRegistry.register(new BladeMetaData("list", ListComponent));
+    this._bladeRegistry.register(new BladeMetaData("detail", DetailComponent));
+  }
+}
