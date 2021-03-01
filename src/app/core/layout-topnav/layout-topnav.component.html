@@ -7,24 +7,24 @@
             <span style="padding-top: 5px;">Goal Planner</span>
         </div>
         <div class="actions">
-            <button mat-button 
-                routerLinkActive="mat-primary"
-                [routerLink]="'/welcome'"
-                [routerLinkActiveOptions]="{ exact:true }"
-            > Welcome </button>
-            <button mat-button 
-                routerLinkActive="mat-primary"
-                [routerLink]="'/search'"
-                [routerLinkActiveOptions]="{ exact:true }"
-            > Search </button>
-            <button mat-button 
-                routerLinkActive="mat-primary" 
-                [routerLink]="'/playground'" 
+            <button mat-button routerLinkActive="mat-primary" [routerLink]="'/welcome'"
+                [routerLinkActiveOptions]="{ exact:true }"> Welcome </button>
+            <button mat-button routerLinkActive="mat-primary" [routerLink]="'/search'"
+                [routerLinkActiveOptions]="{ exact:true }"> Search </button>
+            <button mat-button routerLinkActive="mat-primary" [routerLink]="'/playground'"
                 [routerLinkActiveOptions]="{ exact:true }">
                 Playground </button>
             <button mat-button>Log</button>
         </div>
     </mat-toolbar>
+    <mat-toolbar-row>
+        <span style="color: darkslateblue; font-weight: bold;padding-right: 15px;">[StackOverFlow Jobs]</span>
+        <span style="padding-right: 5px;">Skill Sets: </span>
+        <mat-chip-list>
+            <mat-chip>#Angular</mat-chip>
+            <mat-chip>#Rxjs</mat-chip>
+        </mat-chip-list>
+    </mat-toolbar-row>
     <div class="content-container">
         <ng-content>
         </ng-content>

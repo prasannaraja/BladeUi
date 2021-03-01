@@ -1,4 +1,7 @@
-<ng-content></ng-content>
-<tw-blade *ngFor="let ctx of bladeContexts" [attr.id]="ctx.id" [context]="ctx" (stateChanged)="stateChanged($event)"
-    (selected)="selectBlade($event)" (closed)="closed($event)">
-</tw-blade>
+<div class="outer-flex-container">
+    <div class="inner-flex-container">
+        <tw-blade *ngFor="let ctx of bladeContext$ | async" [context]="ctx" (selected)="selectBlade($event)"
+            (closed)="closed($event)"
+        ></tw-blade>
+    </div>
+</div>

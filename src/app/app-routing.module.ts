@@ -3,14 +3,13 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule, PreloadAllModules } from "@angular/router";
 import { PageNotFoundComponent } from "./features/page-not-found/page-not-found.component";
 import { LayoutComponent } from "./shared/layout/layout.component";
-import {
-  BladerModule,
-  BladeRegistry,
-  BladeMetaData,
-} from "./shared/blader/index";
 import { EntryComponent } from "./blades/entry/entry.component";
 import { ListComponent } from "./blades/list/list.component";
 import { DetailComponent } from "./blades/detail/detail.component";
+import { BladeMetaData } from "./shared/blader/models/blade-meta-data";
+import { BladeRegistry } from "./shared/blader/blade-registry.service";
+import { BladerModule } from "./shared/blader/blader.module";
+import { BladeState } from "./shared/blader/models/blade-state";
 const routes: Routes = [
   {
     path: "login",
@@ -55,11 +54,6 @@ const routes: Routes = [
     ],
   },
   {
-    path: "lazy",
-    loadChildren: () =>
-      import("./shared/lazy/lazy.module").then((m) => m.LazyModule),
-  },
-  {
     path: "**",
     component: PageNotFoundComponent,
   },
@@ -77,8 +71,8 @@ const routes: Routes = [
 })
 export class AppRoutingModule {
   public constructor(private _bladeRegistry: BladeRegistry) {
-    this._bladeRegistry.register(new BladeMetaData("entry", EntryComponent));
-    this._bladeRegistry.register(new BladeMetaData("list", ListComponent));
-    this._bladeRegistry.register(new BladeMetaData("detail", DetailComponent));
+    this._bladeRegistry.register("entry", EntryComponent, BladeState.default);
+    this._bladeRegistry.register("list", ListComponent, BladeState.default);
+    this._bladeRegistry.register("detail", DetailComponent, BladeState.default);
   }
 }

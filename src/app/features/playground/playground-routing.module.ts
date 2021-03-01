@@ -4,9 +4,14 @@ import { PlaygroundComponent } from "./playground.component";
 
 export const PLAYGROUND_ROUTES: Routes = [
   {
-    path: '',
-    component: PlaygroundComponent
-  }
+    path: "",
+    component: PlaygroundComponent,
+  },
+  {
+    path: "lazy",
+    loadChildren: () =>
+      import("../../shared/lazy/lazy.module").then((m) => m.LazyModule),
+  },
 ];
 
 @NgModule({

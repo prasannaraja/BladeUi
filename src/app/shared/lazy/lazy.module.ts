@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, ComponentFactoryResolver } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
-import { BladeRegistry, BladeMetaData } from '../blader/index';
+import { BladeRegistry } from '../blader/blade-registry.service';
+import { BladeMetaData } from '../blader/models/blade-meta-data';
+import { BladeState } from '../blader/models/blade-state';
 import { LazyBladeComponent } from './lazy-blade/lazy-blade.component';
 
 const LAZY_ROUTES = [
@@ -28,14 +29,24 @@ export class LazyModule {
   ) {
     console.log(`registering LazyBladeComponent...`);
 
-    this._bladeRegistry
-      .register(new BladeMetaData(
-        'lazy',
-        LazyBladeComponent,
-        () => {
-          return this._resolver.resolveComponentFactory(LazyBladeComponent);
-        }));
+    /*
+    *
+    const bladeMetaData = new BladeMetaData(
+      "lazy",
+      LazyBladeComponent,
+      BladeState.default,
+      () => {
+        return this._resolver.resolveComponentFactory(LazyBladeComponent);
+      }
+    );
+    *
+    */
 
+    this._bladeRegistry
+      .register('',
+        LazyBladeComponent,
+        BladeState.default
+        );
     console.log(this._bladeRegistry);
   }
 }

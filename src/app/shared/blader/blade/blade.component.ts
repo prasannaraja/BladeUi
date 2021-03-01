@@ -1,43 +1,25 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  Input,
-  Output,
-  EventEmitter,
-  ComponentRef,
-  ViewContainerRef,
-  ViewChild,
-  ComponentFactoryResolver,
-  HostListener,
-  ElementRef
-} from '@angular/core';
-
-import {
-  BladeContext,
-  BladeArgs,
-  BladeState,
-  BladeParamConstants
-} from '../models';
-import { BladeManager } from '../bladeManager.service';
+import { Component, ComponentFactoryResolver, ComponentRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BaseBladeDirective } from '../base-balde/base-blade.directive';
+import { BladeManager } from '../blade-manager.service';
+import { BladeArgs } from '../models/blade-args';
+import { BladeState } from '../models/blade-state';
+import { BladeContext } from '../models/blader-context';
 
 @Component({
-  selector: 'tw-blade',
-  templateUrl: './blade.component.html',
-  styleUrls: ['./blade.component.css'],
-  host: {
-    class: 'blade',
-    '[class.blade--selected]': 'isSelected',
-    '[class.blade--wide]': 'bladeState === 2'
-  },
+  selector: "tw-blade",
+  templateUrl: "./blade.component.html",
+  styleUrls: ["./blade.component.scss"],
 })
 export class BladeComponent implements OnInit, OnDestroy {
-  private _componentRef: ComponentRef<any>;
+  private _componentRef: ComponentRef<BaseBladeDirective>;
   private _bladeState: BladeState = BladeState.default;
+  private subscriptions = new Subscription();
+  public state$: Observable<{ loading: boolean }>;
 
   @Input()
   public context: BladeContext;
-
   @Output()
   public stateChanged: EventEmitter<BladeState> = new EventEmitter<BladeState>();
 
@@ -47,16 +29,12 @@ export class BladeComponent implements OnInit, OnDestroy {
   @Output()
   public closed: EventEmitter<BladeArgs> = new EventEmitter<BladeArgs>();
 
-  public get id(): number {
-    return this._componentRef.instance.id;
+  public get title$(): Observable<string> {
+    return this._componentRef.instance.title$;
   }
 
-  public get title(): string {
-    return this._componentRef.instance.title;
-  }
-
-  public get isDirty(): boolean {
-    return this._componentRef.instance.isDirty;
+  public get isDirty$(): Observable<boolean> {
+    return this._componentRef.instance.isDirty$;
   }
 
   public get canMinimize(): boolean {
@@ -75,7 +53,6 @@ export class BladeComponent implements OnInit, OnDestroy {
     if (!this._mgr.selected) {
       return false;
     }
-
     if (!this.context) {
       return false;
     }
@@ -83,58 +60,55 @@ export class BladeComponent implements OnInit, OnDestroy {
     return this._mgr.selected.id === this.context.id;
   }
 
-  public get canClose(): boolean {
-    if (this.context.isEntry) {
-      return false;
-    }
-
-    return !this.isDirty;
-  }
-
-  @ViewChild('bladeContent', { read: ViewContainerRef, static: true })
+  @ViewChild("bladeContent", { read: ViewContainerRef, static: true })
   protected bladeContent: ViewContainerRef;
 
-  public constructor(
+  constructor(
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     private _mgr: BladeManager,
-    private _resolver: ComponentFactoryResolver,
-    public element: ElementRef
-  ) { }
+    private _resolver: ComponentFactoryResolver
+  ) {}
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 
   public ngOnInit(): void {
     if (this.context) {
       const factory = this.context.metaData.factoryFn
         ? this.context.metaData.factoryFn()
-        : this._resolver.resolveComponentFactory(this.context.metaData.component);
-
-      this._componentRef = this.bladeContent
-        .createComponent(factory, this.bladeContent.length);
+        : this._resolver.resolveComponentFactory(
+            this.context.metaData.component
+          );
+      this._componentRef = this.bladeContent.createComponent(
+        factory,
+        this.bladeContent.length
+      );
       this._componentRef.instance.id = this.context.id;
+      this._bladeState = this.context.state;
 
-      this.setBladeStateIfAvailable();
+      this.state$ = this._componentRef.instance.stateSubject;
+      this._componentRef.changeDetectorRef.detectChanges();
 
-      console.log(`initialized ${this.title} blade:`, this.context.id);
+      this.subscriptions.add(
+        this._componentRef.instance.isDirty$?.subscribe((isDirty) =>
+          this.context.isDirtySubject.next(isDirty)
+        )
+      );
     }
   }
 
-  public ngOnDestroy(): void {
-    if (this._componentRef) {
-      console.log(`destroying ${this.title}`);
-
-      this._componentRef.destroy();
-    }
-  }
-
-  @HostListener('window:keydown', ['$event'])
+  @HostListener("window:keydown", ["$event"])
   public shortCuts(event: KeyboardEvent): void {
-    if (event.ctrlKey && event.key === 'q') {
-      if (this.isSelected && this.canClose) {
+    if (event.ctrlKey && event.key === "q") {
+      if (this.isSelected) {
         this.close();
       }
     }
   }
 
   public select(): void {
-    this.selected.next(this.context.toBladeArgs());
+    this.selected.next(this.context.toBaldeArgs());
   }
 
   public changeState(state: BladeState): void {
@@ -144,18 +118,10 @@ export class BladeComponent implements OnInit, OnDestroy {
   }
 
   public close(): void {
-    this.closed.next(this.context.toBladeArgs());
-  }
-
-  private setBladeStateIfAvailable(): void {
-    if (this._mgr.paramValueExist(this.context.id, BladeParamConstants.BLADE_STATE)) {
-      this._bladeState = this._mgr.getParamValue<BladeState>(
-        this.context.id,
-        BladeParamConstants.BLADE_STATE
-      );
-
-      this.changeState(this._bladeState);
+    if (this.context.isEntry) {
+      this.router.navigate(["../"], { relativeTo: this.activatedRoute });
+    } else {
+      this.closed.next(this.context.toBaldeArgs());
     }
   }
 }
-
