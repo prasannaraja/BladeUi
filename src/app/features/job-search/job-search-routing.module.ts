@@ -1,7 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
-import { BladesContainerComponent } from 'src/app/shared/blader/blades-container/blades-container.component';
 import { JobSearchComponent } from "./job-search.component";
-
+import {BladeComponent} from "../../shared/blader/blade/blade.component"
 export const JobSearch_ROUTES: Routes = [
   {
     path: "",
@@ -10,8 +9,8 @@ export const JobSearch_ROUTES: Routes = [
   },
   {
     path: ":id",
-    component: BladesContainerComponent,
-    children: [{ path: "**", component: BladesContainerComponent }],
+    component: BladeComponent,
+    children: [{ path: "**", component: BladeComponent }],
   },
 ];
 
