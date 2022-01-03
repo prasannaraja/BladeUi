@@ -14,10 +14,14 @@
             > Welcome </button>
             <button mat-button 
                 routerLinkActive="mat-primary"
-                [routerLink]="'/model-set'"
+                [routerLink]="'/jobs'"
                 [routerLinkActiveOptions]="{ exact:true }"
-            > Models </button>
-            <button mat-button> Current Expenses </button>
+            > Jobs </button>
+            <button mat-button 
+            routerLinkActive="mat-primary" 
+            [routerLink]="'/calendar'" 
+            [routerLinkActiveOptions]="{ exact:true }"
+            > Calendar </button>
         </div>
     </mat-toolbar>
     <div class="content-container">
